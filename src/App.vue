@@ -1,16 +1,14 @@
 <script setup>
-  import { ref } from 'vue'
-
-  const now = ref(new Date());
+  import Button from './components/Button.vue';
 </script>
 
 <template>
-  <div>
-    {{ now }}
-  </div>
+  <Button>
+    Начать игру
+  </Button>
   
 </template>
 
 <style scoped>
-  
+
 </style>
