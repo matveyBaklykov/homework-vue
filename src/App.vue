@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  28.06.2025
+  28.06
 </template>
 
 <style scoped>
