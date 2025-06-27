@@ -1,11 +1,16 @@
 <script setup>
-  
+  import { ref } from 'vue'
+
+  const now = ref(new Date());
 </script>
 
 <template>
-  28.06
+  <div>
+    {{ now }}
+  </div>
+  
 </template>
 
 <style scoped>
-
+  
 </style>
