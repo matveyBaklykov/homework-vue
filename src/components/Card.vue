@@ -2,42 +2,51 @@
 import { ref, computed } from 'vue'
 import IconRight from '../icons/IconRight.vue'
 import IconWrong from '../icons/IconWrong.vue'
-let word = ref('unadmitted')
-const status = ref('unanswered')
-const result = ref(null)
-function changeWord() {
-    if (status.value === 'unanswered') {
-    word.value = 'непризнанный'
-    status.value = 'answered'
-  }
-}
-function answerRight() {
-    result.value = 'right'
-}
-function answerWrong() {
-    result.value = 'wrong'
+
+
+
+let cardInfo = ref({
+  word: 'unadmitted',
+  translation: 'непризнанный',
+  state: "closed", // closed or open
+  status: "pending" // sucess, fail or open
+})
+
+function flip () {
+  cardInfo.value.state = "open"
 }
 
-const completed = computed(() => result.value !== null)
+const answerWrong = () => {
+  cardInfo.value.status = 'fail'
+}
+
+const answerRight = () => {
+  cardInfo.value.status = 'success'
+}
+
+const isCardFinished = computed(() => cardInfo.value.status === 'fail' || cardInfo.value.status === 'success')
+
+
+
 </script>
 
 <template>
-    <div class="card" @click="changeWord">
+    <div class="card" @click="flip()">
       <div class="card-side card-front">
         <div class="inner-border">
-          <div class="word">{{ word }}</div>
+          <div class="word">{{ cardInfo.state === 'closed' ? cardInfo.word : cardInfo.translation }}</div>
           <div class="result">
-            <IconRight v-if="result === 'right'" :width="36" :height="36"/>
-            <IconWrong v-if="result === 'wrong'" :width="40" :height="40"/>
+            <IconRight v-if="cardInfo.status === 'success'" :width="36" :height="36"/>
+            <IconWrong v-if="cardInfo.status === 'fail'" :width="40" :height="40"/>
           </div>
           <div class="number">01</div>
-          <div class="flip" v-if="status === 'unanswered'">ПЕРЕВЕРНУТЬ</div>
+          <div class="flip" >ПЕРЕВЕРНУТЬ</div>
           
-          <div class="flipped" v-if="status === 'answered' && !completed">
+          <div class="flipped" v-if="cardInfo.state === 'open' && !isCardFinished">
             <IconWrong @click="answerWrong"/>
             <IconRight @click="answerRight"/>
           </div>
-          <div class="flip" v-if="completed">ЗАВЕРШЕНО</div>
+          <div class="flip" v-if="isCardFinished">ЗАВЕРШЕНО</div>
         </div>
       </div>
     </div>

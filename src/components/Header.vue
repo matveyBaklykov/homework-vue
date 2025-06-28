@@ -1,13 +1,14 @@
 <script setup>
+    import { ref } from 'vue'
     import Score from './Score.vue';
 
-    const score = 100
+    let scoreTotal = ref(0)
 </script>
 
 <template>
     <header class="header">
         <div class="name">ЗАПОМНИ СЛОВО</div>
-        <Score :score="score"/>
+        <Score :score="scoreTotal"/>
     </header>
 </template>
 
