@@ -1,12 +1,37 @@
-<script setup></script>
+<script setup>
+import { ref } from 'vue'
+import IconRight from '../icons/IconRight.vue'
+import IconWrong from '../icons/IconWrong.vue'
+let word = ref('unadmitted')
+const status = ref('unanswered')
+const result = ref(null)
+function changeWord() {
+    word.value = 'непризнанный'
+    status.value = 'answered'
+}
+function answerRight() {
+    result.value = 'right'
+}
+function answerWrong() {
+    result.value = 'wrong'
+}
+</script>
 
 <template>
-    <div class="card">
+    <div class="card" @click="changeWord">
       <div class="card-side card-front">
         <div class="inner-border">
-          <div class="word">unadmitted</div>
+          <div class="word">{{ word }}</div>
+          <div class="result">
+            <IconRight v-if="result === 'right'" :width="36" :height="36"/>
+            <IconWrong v-if="result === 'wrong'" :width="40" :height="40"/>
+          </div>
           <div class="number">01</div>
-          <div class="flip">ПЕРЕВЕРНУТЬ</div>
+          <div class="flip" v-if="status === 'unanswered'">ПЕРЕВЕРНУТЬ</div>
+          <div class="flipped" v-if="status === 'answered'">
+            <IconWrong @click="answerWrong"/>
+            <IconRight @click="answerRight"/>
+          </div>
         </div>
       </div>
     </div>
@@ -63,6 +88,16 @@
       padding: 0 4px;
     }
 
+    .result {
+        position: absolute;
+      top: -10px;
+      left: 40%;
+      font-weight: 400;
+        font-size: 18px;
+      background: white;
+      padding: 0 4px;
+    }
+
     .flip {
       position: absolute;
       bottom: -8px;
@@ -73,5 +108,19 @@
       padding: 0 6px;
       font-size: 12px;
       font-weight: 500;
+    }
+
+    .flipped {
+        position: absolute;
+      bottom: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 12px;
+      background: white;
+      padding: 0 6px;
+      font-size: 12px;
+      font-weight: 500;
+      display: flex;
+      gap: 36px;
     }
 </style>
