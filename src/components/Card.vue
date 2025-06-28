@@ -3,32 +3,25 @@ import { ref, computed } from 'vue'
 import IconRight from '../icons/IconRight.vue'
 import IconWrong from '../icons/IconWrong.vue'
 
-
-
-let cardInfo = ref({
-  word: 'unadmitted',
-  translation: 'непризнанный',
-  state: "closed", // closed or open
-  status: "pending" // sucess, fail or pending
-})
+const { cardInfo } = defineProps({ cardInfo: Object })
 
 function flip () {
-  cardInfo.value.state = "open"
+  cardInfo.state = "open"
 }
 
 const answerWrong = () => {
-  cardInfo.value.status = 'fail'
+  cardInfo.status = 'fail'
 }
 
 const answerRight = () => {
-  cardInfo.value.status = 'success'
+  cardInfo.status = 'success'
 }
 
-const isCardFinished = computed(() => cardInfo.value.status === 'fail' || cardInfo.value.status === 'success')
-
-
-
+const isCardFinished = computed(() =>
+  cardInfo.status === 'fail' || cardInfo.status === 'success'
+)
 </script>
+
 
 <template>
     <div class="card" @click="flip()">
