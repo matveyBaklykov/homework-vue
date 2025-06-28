@@ -14,11 +14,11 @@
         color: var(--color-primary);
         font-weight: 400;
         font-size: 24px;
-        padding: 10px 16px;
-        border-radius: 16px;
+        padding: 16px 10px;
+        border-radius: 100px;
         border: none;
-        background: var(--color-btn);
-        min-width: 315px;
+        background: var(--color-dark-blue);
+        width: 335px;
         cursor: pointer;
     }
 

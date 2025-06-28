@@ -1,14 +1,24 @@
 <script setup>
   import Button from './components/Button.vue';
+  import Header from './components/Header.vue';
 </script>
 
 <template>
-  <Button>
+  <Header ></Header>
+  <main class="main">
+    <Button>
     Начать игру
-  </Button>
+    </Button>
+  </main>
+  
   
 </template>
 
 <style scoped>
-
+  .main {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 </style>

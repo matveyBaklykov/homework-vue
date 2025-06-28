@@ -4,13 +4,17 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   --color-primary: #FFFFFF;
-  --color-btn: #008BFE;
+  --color-dark-blue: #008BFE;
   --color-btn-darker: #006FCB;
   --font: "Roboto", sans-serif;
+  --color-bg: #F0F4F8;
 }
 
 body {
+  box-sizing: border-box;
+  margin: 0;
   font-family: var(--font);
+  background: var(--color-bg);
 }
 
 
