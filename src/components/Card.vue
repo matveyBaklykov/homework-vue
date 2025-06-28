@@ -9,7 +9,7 @@ let cardInfo = ref({
   word: 'unadmitted',
   translation: 'непризнанный',
   state: "closed", // closed or open
-  status: "pending" // sucess, fail or open
+  status: "pending" // sucess, fail or pending
 })
 
 function flip () {
