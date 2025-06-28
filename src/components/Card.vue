@@ -1,13 +1,15 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import IconRight from '../icons/IconRight.vue'
 import IconWrong from '../icons/IconWrong.vue'
 let word = ref('unadmitted')
 const status = ref('unanswered')
 const result = ref(null)
 function changeWord() {
+    if (status.value === 'unanswered') {
     word.value = 'непризнанный'
     status.value = 'answered'
+  }
 }
 function answerRight() {
     result.value = 'right'
@@ -15,6 +17,8 @@ function answerRight() {
 function answerWrong() {
     result.value = 'wrong'
 }
+
+const completed = computed(() => result.value !== null)
 </script>
 
 <template>
@@ -28,10 +32,12 @@ function answerWrong() {
           </div>
           <div class="number">01</div>
           <div class="flip" v-if="status === 'unanswered'">ПЕРЕВЕРНУТЬ</div>
-          <div class="flipped" v-if="status === 'answered'">
+          
+          <div class="flipped" v-if="status === 'answered' && !completed">
             <IconWrong @click="answerWrong"/>
             <IconRight @click="answerRight"/>
           </div>
+          <div class="flip" v-if="completed">ЗАВЕРШЕНО</div>
         </div>
       </div>
     </div>
