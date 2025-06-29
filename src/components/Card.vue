@@ -3,22 +3,24 @@ import { ref, computed } from 'vue'
 import IconRight from '../icons/IconRight.vue'
 import IconWrong from '../icons/IconWrong.vue'
 
-const { cardInfo } = defineProps({ cardInfo: Object })
+const { card } = defineProps({ card: Object, index: Number, })
+
+console.log(card.state)
 
 function flip () {
-  cardInfo.state = "open"
+  card.state = "open"
 }
 
 const answerWrong = () => {
-  cardInfo.status = 'fail'
+  card.status = 'fail'
 }
 
 const answerRight = () => {
-  cardInfo.status = 'success'
+  card.status = 'success'
 }
 
 const isCardFinished = computed(() =>
-  cardInfo.status === 'fail' || cardInfo.status === 'success'
+  card.status === 'fail' || card.status === 'success'
 )
 </script>
 
@@ -27,15 +29,16 @@ const isCardFinished = computed(() =>
     <div class="card" @click="flip()">
       <div class="card-side card-front">
         <div class="inner-border">
-          <div class="word">{{ cardInfo.state === 'closed' ? cardInfo.word : cardInfo.translation }}</div>
+          <div class="word" v-if="card.state === 'closed' && card.status === 'pending'">{{ card.word }}</div>
+          <div class="word" v-if="card.state === 'open'">{{ card.translation }}</div>
           <div class="result">
-            <IconRight v-if="cardInfo.status === 'success'" :width="36" :height="36"/>
-            <IconWrong v-if="cardInfo.status === 'fail'" :width="40" :height="40"/>
+            <IconRight v-if="card.status === 'success'" :width="36" :height="36"/>
+            <IconWrong v-if="card.status === 'fail'" :width="40" :height="40"/>
           </div>
-          <div class="number">01</div>
+          <div class="number">{{ index >= 10 ?  + index + 1 : `0${index + 1}` }}</div>
           <div class="flip" >ПЕРЕВЕРНУТЬ</div>
           
-          <div class="flipped" v-if="cardInfo.state === 'open' && !isCardFinished">
+          <div class="flipped" v-if="card.state === 'open' && !isCardFinished">
             <IconWrong @click="answerWrong"/>
             <IconRight @click="answerRight"/>
           </div>
