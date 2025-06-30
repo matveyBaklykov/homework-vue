@@ -11,13 +11,21 @@
 
   let cards = ref([])
 
+  const error = ref(null)
+
   let cardsModifyed = ref([])
 
   const startGame = async () => {
-    const res = await fetch(API_CARDS)
-    cards.value = await res.json()
+    try {
+      const res = await fetch(API_CARDS)
 
-    cardsModifyed.value = cards.value.map((card) => ({
+      if (!res.ok) {
+        throw new Error(`Ошибка загрузки: ${res.status} ${res.statusText}`)
+      }
+      
+      cards.value = await res.json()
+
+      cardsModifyed.value = cards.value.map((card) => ({
       word: card.word,
       translation: card.translation,
       state: "closed",
@@ -26,6 +34,13 @@
 
 
     gameStarted.value = true
+
+    } catch (err) {
+       console.error('Ошибка при загрузке карточек:', err)
+      error.value = 'Не удалось загрузить карточки. Попробуйте позже.'
+    }
+    
+    
   }
 
   
@@ -35,7 +50,10 @@
   <Header :totalScore="totalScore"></Header>
   <main class="main">
     <div class="cards">
-      <Card v-if="gameStarted" :card="card" v-for="(card, index) in cardsModifyed" :key="card.word" :index="index"/>
+      <Card v-if="gameStarted && cards" :card="card" v-for="(card, index) in cardsModifyed" :key="card.word" :index="index"/>
+    </div>
+    <div v-if="error" class="error-message">
+      {{ error }}
     </div>
     
     <Button v-show="!gameStarted" @click="startGame">
@@ -61,5 +79,11 @@
     gap: 107px;
     align-items: center;
     flex-wrap: wrap;
+  }
+
+  .error-message {
+    color: red;
+    margin: 16px;
+    text-align: center;
   }
 </style>
