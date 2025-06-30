@@ -5,7 +5,7 @@ import IconWrong from '../icons/IconWrong.vue'
 
 const { card } = defineProps({ card: Object, index: Number, })
 
-console.log(card.state)
+console.log()
 
 function flip () {
   card.state = "open"
@@ -35,7 +35,7 @@ const isCardFinished = computed(() =>
             <IconRight v-if="card.status === 'success'" :width="36" :height="36"/>
             <IconWrong v-if="card.status === 'fail'" :width="40" :height="40"/>
           </div>
-          <div class="number">{{ index >= 10 ?  + index + 1 : `0${index + 1}` }}</div>
+          <div class="number">{{ index >= 9 ?  + index + 1 : `0${index + 1}` }}</div>
           <div class="flip" >ПЕРЕВЕРНУТЬ</div>
           
           <div class="flipped" v-if="card.state === 'open' && !isCardFinished">
@@ -87,6 +87,7 @@ const isCardFinished = computed(() =>
     .word {
         font-weight: 400;
         font-size: 18px;
+        text-align: center;
     }
 
     .number {

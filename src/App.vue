@@ -1,57 +1,41 @@
 <script setup>
-  import { ref } from 'vue'
+  import { computed, ref } from 'vue'
   import Button from './components/Button.vue';
   import Card from './components/Card.vue';
   import Header from './components/Header.vue';
 
   const gameStarted = ref(false)
+  const API_CARDS = 'http://localhost:8080/api/random-words'
 
   let totalScore = ref(0)
 
-  let cards = ref([
-    {
-      word: 'unadmitted',
-      translation: 'непризнанный',
-      state: "closed", // closed or open
-      status: "pending" // sucess, fail or pending
-    }, 
-    {
-      word: 'armour-piercer',
-      translation: 'бронебойщик',
-      state: "closed", 
-      status: "pending" 
-    },
-    {
-      word: 'stamen',
-      translation: 'тычинка',
-      state: "closed", 
-      status: "pending" 
-    },
-    {
-      word: 'vino',
-      translation: 'вино',
-      state: "closed", 
-      status: "pending" 
-    },
-    {
-      word: 'pollination',
-      translation: 'опыление',
-      state: "closed", 
-      status: "pending" 
-    },
-    
-  ])
+  let cards = ref([])
 
-  const startGame = () => {
+  let cardsModifyed = ref([])
+
+  const startGame = async () => {
+    const res = await fetch(API_CARDS)
+    cards.value = await res.json()
+
+    cardsModifyed.value = cards.value.map((card) => ({
+      word: card.word,
+      translation: card.translation,
+      state: "closed",
+      status: "pending"
+    }))
+
+
     gameStarted.value = true
   }
+
+  
 </script>
 
 <template>
   <Header :totalScore="totalScore"></Header>
   <main class="main">
     <div class="cards">
-      <Card v-if="gameStarted" :card="card" v-for="( card, index )  in cards" :key="index" :index="index"/>
+      <Card v-if="gameStarted" :card="card" v-for="(card, index) in cardsModifyed" :key="card.word" :index="index"/>
     </div>
     
     <Button v-show="!gameStarted" @click="startGame">
@@ -75,7 +59,6 @@
   .cards {
     display: flex;
     gap: 107px;
-    justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
   }
