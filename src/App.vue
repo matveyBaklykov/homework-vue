@@ -32,7 +32,7 @@
       status: "pending"
     }))
 
-
+    totalScore.value = 0
     gameStarted.value = true
 
     } catch (err) {
@@ -43,6 +43,24 @@
     
   }
 
+  const flipCard = (index) => {
+    if (cardsModifyed.value[index].state === 'closed') {
+    cardsModifyed.value[index].state = 'open'
+    }
+  }
+
+  const handleAnswer = ({ index, status }) => {
+  if (cardsModifyed.value[index].status !== 'pending') return 
+
+  cardsModifyed.value[index].status = status
+
+  if (status === 'success') {
+    totalScore.value += 10
+  } else if (status === 'fail') {
+    totalScore.value -= 4
+  }
+}
+
   
 </script>
 
@@ -50,14 +68,17 @@
   <Header :totalScore="totalScore"></Header>
   <main class="main">
     <div class="cards">
-      <Card v-if="gameStarted && cards" :card="card" v-for="(card, index) in cardsModifyed" :key="card.word" :index="index"/>
+      <Card v-if="gameStarted && cardsModifyed" :card="card" v-for="(card, index) in cardsModifyed" :key="card.word" :index="index" @flip="flipCard(index)" @answer="handleAnswer"/>
     </div>
     <div v-if="error" class="error-message">
       {{ error }}
     </div>
     
-    <Button v-show="!gameStarted" @click="startGame">
+    <Button v-show="!gameStarted && !error" @click="startGame">
     Начать игру
+    </Button>
+    <Button v-if="gameStarted" class="retry" @click="startGame">
+      Начать заново
     </Button>
   </main>
   
@@ -85,5 +106,9 @@
     color: red;
     margin: 16px;
     text-align: center;
+  }
+
+  .retry {
+    margin-block: 100px;
   }
 </style>

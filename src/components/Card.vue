@@ -1,23 +1,11 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { computed } from 'vue'
 import IconRight from '../icons/IconRight.vue'
 import IconWrong from '../icons/IconWrong.vue'
 
-const { card } = defineProps({ card: Object, index: Number, })
+const { card, index } = defineProps({ card: Object, index: Number, })
 
-console.log()
-
-function flip () {
-  card.state = "open"
-}
-
-const answerWrong = () => {
-  card.status = 'fail'
-}
-
-const answerRight = () => {
-  card.status = 'success'
-}
+const emit = defineEmits(['flip', 'answer'])
 
 const isCardFinished = computed(() =>
   card.status === 'fail' || card.status === 'success'
@@ -26,7 +14,7 @@ const isCardFinished = computed(() =>
 
 
 <template>
-    <div class="card" @click="flip()">
+    <div class="card" @click="emit('flip')">
       <div class="card-side card-front">
         <div class="inner-border">
           <div class="word" v-if="card.state === 'closed' && card.status === 'pending'">{{ card.word }}</div>
@@ -39,8 +27,8 @@ const isCardFinished = computed(() =>
           <div class="flip" >ПЕРЕВЕРНУТЬ</div>
           
           <div class="flipped" v-if="card.state === 'open' && !isCardFinished">
-            <IconWrong @click="answerWrong"/>
-            <IconRight @click="answerRight"/>
+            <IconWrong @click="emit('answer', { index, status: 'fail' })"/>
+            <IconRight @click="emit('answer', { index, status: 'success' })"/>
           </div>
           <div class="flip" v-if="isCardFinished">ЗАВЕРШЕНО</div>
         </div>
