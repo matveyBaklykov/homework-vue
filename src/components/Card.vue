@@ -27,8 +27,8 @@ const isCardFinished = computed(() =>
           <div class="flip" >ПЕРЕВЕРНУТЬ</div>
           
           <div class="flipped" v-if="card.state === 'open' && !isCardFinished">
-            <IconWrong @click="emit('answer', { index, status: 'fail' })"/>
-            <IconRight @click="emit('answer', { index, status: 'success' })"/>
+            <IconWrong @click.stop="emit('answer', { index, status: 'fail' })"/>
+            <IconRight @click.stop="emit('answer', { index, status: 'success' })"/>
           </div>
           <div class="flip" v-if="isCardFinished">ЗАВЕРШЕНО</div>
         </div>
