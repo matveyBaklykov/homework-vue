@@ -1,13 +1,16 @@
 <script setup>
+    import { ref } from 'vue'
     import Score from './Score.vue';
 
-    const score = 100
+    const { totalScore } = defineProps({
+        totalScore: Number
+    })
 </script>
 
 <template>
     <header class="header">
         <div class="name">ЗАПОМНИ СЛОВО</div>
-        <Score :score="score"/>
+        <Score :score="totalScore"/>
     </header>
 </template>
 
